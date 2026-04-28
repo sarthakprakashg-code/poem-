@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 💖</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #000; /* Pure Black */
+            overflow: hidden;
+            color: #ff4da6;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 🎵 Start Overlay */
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            cursor: pointer;
+        }
+
+        #overlay h2 {
+            font-size: 24px;
+            letter-spacing: 2px;
+            color: #ff4da6;
+            text-shadow: 0 0 10px #ff4da6;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        /* 💘 Raining Hearts */
+        .heart {
+            position: absolute;
+            top: -10px;
+            color: #ff2e88;
+            animation: fall linear infinite;
+            opacity: 0.8;
+            z-index: 1;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh); opacity: 0; }
+        }
+
+        /* ✨ Poem Container */
+        .container {
+            text-align: center;
+            width: 85%;
+            z-index: 10;
+        }
+
+        #poem {
+            font-size: 32px;
+            font-weight: 500;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s ease;
+            color: #ff4da6;
+            /* 💗 INTENSE PINK GLOW */
+            text-shadow: 
+                0 0 10px #ff4da6,
+                0 0 20px #ff2e88,
+                0 0 40px #ff2e88;
+        }
+
+        .show { opacity: 1 !important; transform: translateY(0) !important; }
+
+        @media (max-width: 600px) {
+            #poem { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="overlay">
+    <h2>TAP TO START 💖</h2>
+</div>
+
+<audio id="music" loop>
+    <source src="your-music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <div id="poem"></div>
+</div>
+
+<script>
+    const poemLines = [
+        "kaise bataoon main tumhe 💖",
+"mere liye tum kaun ho ✨",
+"kaise bataoon main tumhe...",
+"tum dhadkanon ka geet ho ❤️",
+"jeevan ka tum sangeet ho 🎶",
+"tum zindagi...",
+"Tum bandagi...",
+"Tum roshni ✨",
+"Tum taazgi 🌸",
+"tum har khushi 😊",
+"tum pyaar ho, tum preet ho 💕",
+"manmeet ho ❤️",
+"aankhon mein tum 👀",
+"yaadon mein tum 💭",
+"saanson mein tum 💫",
+"aahon mein tum...",
+"neendon mein tum 😴",
+"khwaabon mein tum 🌙",
+"Tum ho meri har baat me 💖",
+"tum ho mere din raat me ☀️🌙",
+"tum ho mere din raat me...",
+"tum subah mein 🌅",
+"Tum shaam me 🌇",
+"Tum soch me 🤍",
+"Tum kaam me 💼",
+"Mere liye paana bhi tum",
+"Khona bhi tum",
+"Mere liye hasna bhi tum 😊",
+"Mere liye rona bhi tum 😢",
+"Aur jaagna sona bhi tum 🌙",
+"Jaau kahi...",
+"Dekhu kahi...",
+"Tum ho waha ❤️",
+"Tum ho wahi ❤️",
+"Kese batau mai tumhe...",
+"Tum bin to mai kuch bhi nhi 💔",
+"Mera sab kuch ho tum 💖" 
+    ];
+
+    let index = 0;
+    const poemDiv = document.getElementById("poem");
+    const overlay = document.getElementById("overlay");
+    const music = document.getElementById("music");
+
+    function createHearts() {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML = "💖";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.fontSize = (15 + Math.random() * 25) + "px";
+        heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 8000);
+    }
+
+    function showNextLine() {
+        poemDiv.classList.remove("show");
+        setTimeout(() => {
+            poemDiv.innerText = poemLines[index];
+            poemDiv.classList.add("show");
+            index = (index + 1) % poemLines.length;
+        }, 800);
+    }
+
+    // Start everything on click
+    overlay.addEventListener("click", () => {
+        overlay.style.display = "none";
+        music.play();
+        setInterval(createHearts, 300);
+        setInterval(showNextLine, 3500);
+        showNextLine();
+    });
+</script>
+
+</body>
+</html>
