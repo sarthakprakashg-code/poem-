@@ -21,7 +21,7 @@ body{
     align-items:center;
 }
 
-/* 🔐 PASSWORD SCREEN */
+/* 🔐 PASSWORD */
 #lockScreen{
     position:fixed;
     top:0;left:0;
@@ -42,10 +42,8 @@ body{
 #passwordInput{
     padding:10px;
     border:none;
-    outline:none;
     border-radius:5px;
     text-align:center;
-    font-size:16px;
 }
 
 #unlockBtn{
@@ -60,11 +58,10 @@ body{
 
 #error{
     margin-top:10px;
-    color:#ff4da6;
     font-size:14px;
 }
 
-/* 🎵 TAP SCREEN */
+/* 🎵 TAP */
 #overlay{
     position:fixed;
     top:0;left:0;
@@ -111,8 +108,6 @@ body{
 
 #poem{
     font-size:30px;
-    opacity:1;
-    transform:translateY(20px);
     transition:all 1s ease;
     text-shadow:
         0 0 6px #ff4da6,
@@ -120,70 +115,79 @@ body{
         0 0 25px #ff2e88;
 }
 
-.show{
-    opacity:1;
-    transform:translateY(0);
+/* 💥 FINAL MESSAGE */
+#finalMessage{
+    position:absolute;
+    font-size:40px;
+    text-align:center;
+    opacity:0;
+    transform:scale(0.5);
+    color:#ff4da6;
+    text-shadow:
+        0 0 10px #ff4da6,
+        0 0 30px #ff2e88,
+        0 0 60px #ff2e88;
+    transition:all 1.5s ease;
+}
+
+.showFinal{
+    opacity:1 !important;
+    transform:scale(1.2) !important;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔐 PASSWORD -->
 <div id="lockScreen">
     <h2>Enter Password 💖</h2>
-    <input type="password" id="passwordInput" placeholder="Enter secret...">
+    <input type="password" id="passwordInput">
     <button id="unlockBtn">Unlock</button>
     <div id="error"></div>
 </div>
 
-<!-- 🎵 TAP -->
 <div id="overlay">
     <h2>TAP TO START 💖</h2>
 </div>
 
 <audio id="music" loop preload="auto">
-    <source src="your-music.mp3" type="audio/mpeg">
+    <source src="poembgmusic.mpeg" type="audio/mpeg">
 </audio>
 
 <div class="container">
     <div id="poem"></div>
 </div>
 
+<div id="finalMessage">I LOVE YOU ICCHA 💖</div>
+
 <script>
 
-/* 🔐 PASSWORD */
 const correctPassword = "youaremine";
-
-const lockScreen = document.getElementById("lockScreen");
-const overlay = document.getElementById("overlay");
 
 document.getElementById("unlockBtn").onclick = () => {
     const input = document.getElementById("passwordInput").value.toLowerCase();
 
     if(input === correctPassword){
-        lockScreen.style.display = "none";
-        overlay.style.display = "flex";
+        lockScreen.style.display="none";
+        overlay.style.display="flex";
     } else {
-        document.getElementById("error").innerText = "Hmm… that’s not our secret 😏💖";
+        document.getElementById("error").innerText="Hmm… wrong secret 😏💖";
     }
 };
 
-/* 💘 HEARTS */
 function createHearts(){
-    const heart = document.createElement("div");
+    const heart=document.createElement("div");
     heart.classList.add("heart");
-    heart.innerHTML = "💖";
+    heart.innerHTML="💖";
 
-    heart.style.left = Math.random()*100 + "vw";
-    heart.style.fontSize = (15 + Math.random()*25) + "px";
-    heart.style.animationDuration = (5 + Math.random()*4) + "s";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(15+Math.random()*25)+"px";
+    heart.style.animationDuration=(5+Math.random()*4)+"s";
 
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),9000);
 }
 
-/* 📝 POEM */
 const poemLines = [
 "kaise bataoon main tumhe 💖",
 "mere liye tum kaun ho ✨",
@@ -205,7 +209,6 @@ const poemLines = [
 "khwaabon mein tum 🌙",
 "Tum ho meri har baat me 💖",
 "tum ho mere din raat me ☀️🌙",
-"tum ho mere din raat me...",
 "tum subah mein 🌅",
 "Tum shaam me 🌇",
 "Tum soch me 🤍",
@@ -219,33 +222,46 @@ const poemLines = [
 "Dekhu kahi...",
 "Tum ho waha ❤️",
 "Tum ho wahi ❤️",
-"Kese batau mai tumhe...",
 "Tum bin to mai kuch bhi nhi 💔",
 "Mera sab kuch ho tum 💖"
 ];
 
-let index = 0;
-const poemDiv = document.getElementById("poem");
-const music = document.getElementById("music");
+let index=0;
+const poemDiv=document.getElementById("poem");
+const finalMessage=document.getElementById("finalMessage");
+const music=document.getElementById("music");
 
 function showNextLine(){
-    poemDiv.innerText = poemLines[index];
-    poemDiv.classList.add("show");
-    index = (index + 1) % poemLines.length;
+    if(index < poemLines.length){
+        poemDiv.innerText = poemLines[index];
+        index++;
+    } else {
+        clearInterval(poemInterval);
+        poemDiv.style.display="none";
+
+        // 💥 FINAL EFFECT
+        finalMessage.classList.add("showFinal");
+
+        // 💘 Extra hearts burst
+        for(let i=0;i<30;i++){
+            setTimeout(createHearts, i*100);
+        }
+    }
 }
 
-/* 🎬 START */
-overlay.addEventListener("click", () => {
-    overlay.style.display = "none";
+let poemInterval;
+
+document.getElementById("overlay").addEventListener("click", () => {
+    document.getElementById("overlay").style.display="none";
 
     music.play().catch(()=>{});
 
     setInterval(createHearts, 280);
-    setInterval(showNextLine, 3600);
 
     poemDiv.innerText = poemLines[0];
-    poemDiv.classList.add("show");
     index = 1;
+
+    poemInterval = setInterval(showNextLine, 3500);
 });
 
 </script>
