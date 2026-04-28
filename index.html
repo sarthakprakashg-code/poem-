@@ -1,100 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For You 💖</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💖</title>
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #000; /* Pure Black */
-            overflow: hidden;
-            color: #ff4da6;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
-        /* 🎵 Start Overlay */
-        #overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-            cursor: pointer;
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-        #overlay h2 {
-            font-size: 24px;
-            letter-spacing: 2px;
-            color: #ff4da6;
-            text-shadow: 0 0 10px #ff4da6;
-            animation: pulse 1.5s infinite;
-        }
+body{
+    font-family:'Poppins',sans-serif;
+    background:#000;
+    overflow:hidden;
+    color:#ff4da6;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
+/* 🔐 PASSWORD SCREEN */
+#lockScreen{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:#000;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:200;
+}
 
-        /* 💘 Raining Hearts */
-        .heart {
-            position: absolute;
-            top: -10px;
-            color: #ff2e88;
-            animation: fall linear infinite;
-            opacity: 0.8;
-            z-index: 1;
-        }
+#lockScreen h2{
+    margin-bottom:20px;
+    text-shadow:0 0 10px #ff4da6;
+}
 
-        @keyframes fall {
-            to { transform: translateY(110vh); opacity: 0; }
-        }
+#passwordInput{
+    padding:10px;
+    border:none;
+    outline:none;
+    border-radius:5px;
+    text-align:center;
+    font-size:16px;
+}
 
-        /* ✨ Poem Container */
-        .container {
-            text-align: center;
-            width: 85%;
-            z-index: 10;
-        }
+#unlockBtn{
+    margin-top:10px;
+    padding:8px 20px;
+    border:none;
+    background:#ff4da6;
+    color:#fff;
+    border-radius:5px;
+    cursor:pointer;
+}
 
-        #poem {
-            font-size: 32px;
-            font-weight: 500;
-            line-height: 1.6;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease;
-            color: #ff4da6;
-            /* 💗 INTENSE PINK GLOW */
-            text-shadow: 
-                0 0 10px #ff4da6,
-                0 0 20px #ff2e88,
-                0 0 40px #ff2e88;
-        }
+#error{
+    margin-top:10px;
+    color:#ff4da6;
+    font-size:14px;
+}
 
-        .show { opacity: 1 !important; transform: translateY(0) !important; }
+/* 🎵 TAP SCREEN */
+#overlay{
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:#000;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:100;
+    cursor:pointer;
+}
 
-        @media (max-width: 600px) {
-            #poem { font-size: 22px; }
-        }
-    </style>
+#overlay h2{
+    text-shadow:0 0 10px #ff4da6;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%{opacity:0.5;}
+    50%{opacity:1;}
+    100%{opacity:0.5;}
+}
+
+/* 💘 HEARTS */
+.heart{
+    position:absolute;
+    top:-10px;
+    color:#ff2e88;
+    animation:fall linear infinite;
+    opacity:0.6;
+    z-index:0;
+}
+
+@keyframes fall{
+    to{transform:translateY(110vh);opacity:0;}
+}
+
+/* ✨ TEXT */
+.container{
+    text-align:center;
+    width:85%;
+    z-index:10;
+}
+
+#poem{
+    font-size:30px;
+    opacity:1;
+    transform:translateY(20px);
+    transition:all 1s ease;
+    text-shadow:
+        0 0 6px #ff4da6,
+        0 0 12px #ff2e88,
+        0 0 25px #ff2e88;
+}
+
+.show{
+    opacity:1;
+    transform:translateY(0);
+}
+</style>
 </head>
+
 <body>
 
+<!-- 🔐 PASSWORD -->
+<div id="lockScreen">
+    <h2>Enter Password 💖</h2>
+    <input type="password" id="passwordInput" placeholder="Enter secret...">
+    <button id="unlockBtn">Unlock</button>
+    <div id="error"></div>
+</div>
+
+<!-- 🎵 TAP -->
 <div id="overlay">
     <h2>TAP TO START 💖</h2>
 </div>
 
-<audio id="music" loop>
+<audio id="music" loop preload="auto">
     <source src="your-music.mp3" type="audio/mpeg">
 </audio>
 
@@ -103,8 +151,41 @@
 </div>
 
 <script>
-    const poemLines = [
-        "kaise bataoon main tumhe 💖",
+
+/* 🔐 PASSWORD */
+const correctPassword = "youaremine";
+
+const lockScreen = document.getElementById("lockScreen");
+const overlay = document.getElementById("overlay");
+
+document.getElementById("unlockBtn").onclick = () => {
+    const input = document.getElementById("passwordInput").value.toLowerCase();
+
+    if(input === correctPassword){
+        lockScreen.style.display = "none";
+        overlay.style.display = "flex";
+    } else {
+        document.getElementById("error").innerText = "Hmm… that’s not our secret 😏💖";
+    }
+};
+
+/* 💘 HEARTS */
+function createHearts(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (15 + Math.random()*25) + "px";
+    heart.style.animationDuration = (5 + Math.random()*4) + "s";
+
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),9000);
+}
+
+/* 📝 POEM */
+const poemLines = [
+"kaise bataoon main tumhe 💖",
 "mere liye tum kaun ho ✨",
 "kaise bataoon main tumhe...",
 "tum dhadkanon ka geet ho ❤️",
@@ -140,42 +221,33 @@
 "Tum ho wahi ❤️",
 "Kese batau mai tumhe...",
 "Tum bin to mai kuch bhi nhi 💔",
-"Mera sab kuch ho tum 💖" 
-    ];
+"Mera sab kuch ho tum 💖"
+];
 
-    let index = 0;
-    const poemDiv = document.getElementById("poem");
-    const overlay = document.getElementById("overlay");
-    const music = document.getElementById("music");
+let index = 0;
+const poemDiv = document.getElementById("poem");
+const music = document.getElementById("music");
 
-    function createHearts() {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (15 + Math.random() * 25) + "px";
-        heart.style.animationDuration = (4 + Math.random() * 4) + "s";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 8000);
-    }
+function showNextLine(){
+    poemDiv.innerText = poemLines[index];
+    poemDiv.classList.add("show");
+    index = (index + 1) % poemLines.length;
+}
 
-    function showNextLine() {
-        poemDiv.classList.remove("show");
-        setTimeout(() => {
-            poemDiv.innerText = poemLines[index];
-            poemDiv.classList.add("show");
-            index = (index + 1) % poemLines.length;
-        }, 800);
-    }
+/* 🎬 START */
+overlay.addEventListener("click", () => {
+    overlay.style.display = "none";
 
-    // Start everything on click
-    overlay.addEventListener("click", () => {
-        overlay.style.display = "none";
-        music.play();
-        setInterval(createHearts, 300);
-        setInterval(showNextLine, 3500);
-        showNextLine();
-    });
+    music.play().catch(()=>{});
+
+    setInterval(createHearts, 280);
+    setInterval(showNextLine, 3600);
+
+    poemDiv.innerText = poemLines[0];
+    poemDiv.classList.add("show");
+    index = 1;
+});
+
 </script>
 
 </body>
